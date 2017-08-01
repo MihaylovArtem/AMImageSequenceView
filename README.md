@@ -84,5 +84,5 @@ imageSequenceView.contentMode = UIViewContentModeScaleCenter;  //Default is UIVi
 
 ## Credits
 
-`AMImageSequenceView` is brought to you by [Artem Mihaylov](http://mihaylovartem.ru). 
+`AMImageSequenceView` is developed by [Artem Mihaylov](http://mihaylovartem.ru). 
 If you're using `AMImageSequenceView` in your project, attribution would be very appreciated.
