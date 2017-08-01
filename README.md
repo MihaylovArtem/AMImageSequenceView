@@ -5,7 +5,7 @@
 ![License](https://cocoapod-badges.herokuapp.com/l/AMImageSequenceView/badge.(png|svg))
 
 
-`AMImageSequenceView` is a simple View to create image sequence in your iOS app. This view is intended for viewing 360-spin images. It supports 360-degree horizontal rotation and image zooming.
+`AMImageSequenceView` is a simple view for showing image sequence in your iOS app. This view is intended for viewing 360-spin images. It supports 360-degree horizontal rotation and image zooming.
 
 ## Image examples
 
@@ -31,7 +31,7 @@ pod install
 
 ### Manually
 
-Drag the `SVProgressHUD/SVProgressHUD` folder into your project.
+Drag the `AMImageSequenceView/ImageSequenceView` folder into your project.
 
 ## Usage
 
