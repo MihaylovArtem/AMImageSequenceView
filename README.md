@@ -17,7 +17,7 @@ https://www.yofla.com/3d-rotate/examples/backpack-360-view/
 
 ### From CocoaPods
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like `SVProgressHUD` in your projects. First, add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like `AMImageSequenceView` in your projects. First, add the following line to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html):
 
 ```ruby
 pod 'AMImageSequenceView'
