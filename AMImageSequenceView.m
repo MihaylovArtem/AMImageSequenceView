@@ -1,17 +1,17 @@
 //
-//  ImageSequenceView.m
+//  AMImageSequenceView.m
 //
-//  Created by Artem on 27.03.17.
+//  Created by Artem Mihaylov on 27.03.17.
 //  Copyright © 2017 Artem Mihaylov. All rights reserved.
 //
 
-#import "ImageSequenceView.h"
+#import "AMImageSequenceView.h"
 
-@interface ImageSequenceView () <UIScrollViewDelegate>
+@interface AMImageSequenceView () <UIScrollViewDelegate>
 
 @end
 
-@implementation ImageSequenceView {
+@implementation AMImageSequenceView {
     UIImageView *imageView;
     UIScrollView *scrollView;
     NSArray <UIImage *> *imagesArray;
@@ -21,10 +21,16 @@
 #pragma mark - Init
 
 -(instancetype) initWithImages:(nonnull NSArray<UIImage *> *)images frame:(CGRect)frame {
-    if (!images || !!images.count) {
-        NSLog(@"Error! Can't init imageSequenceView with empty or nil array of images");
+    if (!images) {
+        NSLog(@"Error! Can't init AMImageSequenceView with nil array of images");
         return nil;
     }
+    
+    if (!images.count) {
+        NSLog(@"Error! Can't init AMImageSequenceView with empty array of images");
+        return nil;
+    }
+    
     self = [super initWithFrame:frame];
     if (self) {
         imagesArray = images;
@@ -33,6 +39,8 @@
         //Default values
         self.sensivity = 0.8;
         self.zoomEnabled = NO;
+        self.zoomBouncesEnabled = NO;
+        self.maximumZoomScale = 1.0;
         self.inertiaEnabled = YES;
         self.contentMode = UIViewContentModeScaleAspectFit;
         
@@ -42,7 +50,9 @@
         scrollView.scrollEnabled = NO;
         scrollView.delegate = self;
         scrollView.bounces = NO;
-        scrollView.bouncesZoom = NO;
+        scrollView.bouncesZoom = self.zoomBouncesEnabled;
+        scrollView.minimumZoomScale = self.minimumZoomScale;
+        scrollView.maximumZoomScale = self.maximumZoomScale;
         scrollView.showsVerticalScrollIndicator = NO;
         scrollView.showsHorizontalScrollIndicator = NO;
         
@@ -61,7 +71,7 @@
 #pragma mark - Swipes
 
 - (void)handleSwipe:(UIPanGestureRecognizer *)swipe {
-    if (scrollView.zoomScale > 1) {
+    if (scrollView.zoomScale > self.minimumZoomScale) {
         return;
     }
     if (swipe.state == UIGestureRecognizerStateBegan || swipe.state == UIGestureRecognizerStateChanged) {
@@ -120,17 +130,48 @@
 
 -(void)setZoomEnabled:(BOOL)zoomEnabled {
     _zoomEnabled = zoomEnabled;
-    if (zoomEnabled) {
-        scrollView.scrollEnabled = YES;
-        scrollView.minimumZoomScale = 1.0;
-        scrollView.maximumZoomScale = 2.5;
-    } else {
-        scrollView.scrollEnabled = NO;
-    }
+    scrollView.scrollEnabled = zoomEnabled;
+}
+
+-(void)setZoomBouncesEnabled:(BOOL)zoomBouncesEnabled {
+    _zoomBouncesEnabled = zoomBouncesEnabled;
+    scrollView.bouncesZoom = zoomBouncesEnabled;
+}
+
+-(void)setMaximumZoomScale:(CGFloat)maximumZoomScale {
+    _maximumZoomScale = maximumZoomScale;
+    scrollView.maximumZoomScale = maximumZoomScale;
+}
+
+-(CGFloat)minimumZoomScale {
+    return 1.0;
 }
 
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return imageView;
+}
+
+- (void)centerScrollViewContents {
+    CGSize boundsSize = scrollView.bounds.size;
+    CGRect contentsFrame = imageView.frame;
+    
+    if (contentsFrame.size.width < boundsSize.width) {
+        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
+    } else {
+        contentsFrame.origin.x = 0.0f;
+    }
+    
+    if (contentsFrame.size.height < boundsSize.height) {
+        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
+    } else {
+        contentsFrame.origin.y = 0.0f;
+    }
+    
+    imageView.frame = contentsFrame;
+}
+
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    [self centerScrollViewContents];
 }
 
 #pragma mark - Other
