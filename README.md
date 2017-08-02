@@ -31,7 +31,7 @@ pod install
 
 ### Manually
 
-Drag the `AMImageSequenceView/ImageSequenceView` folder into your project.
+Drag the `AMImageSequenceView/AMImageSequenceView` folder into your project.
 
 ## Usage
 
